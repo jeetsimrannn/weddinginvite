@@ -1,4 +1,4 @@
-const EVENT_DATE_ISO = "2026-06-14T18:30:00";
+const EVENT_DATE_ISO = "2026-03-14T18:30:00";
 const STORAGE_KEYS = {
   rsvps: "engagement_rsvps",
 };
@@ -46,6 +46,22 @@ function tickCountdown() {
   countdownIds.seconds.textContent = seconds;
 }
 
+function updateMusicToggleLabel() {
+  const isMuted = bgMusic.muted;
+  musicToggle.textContent = isMuted ? "Unmute" : "Mute";
+  musicToggle.setAttribute("aria-pressed", String(!isMuted));
+}
+
+async function ensureMusicPlaying() {
+  if (bgMusic.paused) {
+    try {
+      await bgMusic.play();
+    } catch {
+      // Browser may still block playback in some contexts.
+    }
+  }
+}
+
 rsvpForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -71,19 +87,9 @@ rsvpForm.addEventListener("submit", (event) => {
 });
 
 musicToggle.addEventListener("click", async () => {
-  if (bgMusic.paused) {
-    try {
-      await bgMusic.play();
-      musicToggle.textContent = "Pause Music";
-      musicToggle.setAttribute("aria-pressed", "true");
-    } catch {
-      musicToggle.textContent = "Tap Again to Play";
-    }
-  } else {
-    bgMusic.pause();
-    musicToggle.textContent = "Play Music";
-    musicToggle.setAttribute("aria-pressed", "false");
-  }
+  bgMusic.muted = !bgMusic.muted;
+  await ensureMusicPlaying();
+  updateMusicToggleLabel();
 });
 
 function hideIntro() {
@@ -97,10 +103,13 @@ function hideIntro() {
 
 if (inviteIntro) {
   document.body.classList.add("intro-active");
-  waxSeal?.addEventListener("click", () => {
+  waxSeal?.addEventListener("click", async () => {
     if (inviteIntro.classList.contains("is-opening")) return;
     waxSeal.disabled = true;
     inviteIntro.classList.add("is-opening");
+    bgMusic.muted = false;
+    await ensureMusicPlaying();
+    updateMusicToggleLabel();
     setTimeout(hideIntro, 2300);
   });
 
@@ -110,7 +119,6 @@ if (inviteIntro) {
       waxSeal.click();
     }
   });
-
 }
 
 if (!inviteIntro) {
@@ -123,5 +131,7 @@ if (!waxSeal && inviteIntro) {
   }, 2000);
 }
 
+bgMusic.muted = false;
+updateMusicToggleLabel();
 tickCountdown();
 setInterval(tickCountdown, 1000);
