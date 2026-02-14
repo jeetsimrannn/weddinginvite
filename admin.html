@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engagement Admin Dashboard</title>
+    <meta name="description" content="Private admin dashboard for engagement invite RSVPs and updates." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape shape-1" aria-hidden="true"></div>
+    <div class="bg-shape shape-2" aria-hidden="true"></div>
+
+    <main class="container">
+      <section id="authCard" class="card auth-card">
+        <h1 class="dashboard-title">Private Dashboard Access</h1>
+        <form id="authForm" class="stack" autocomplete="off">
+          <label for="adminPin">Enter access PIN</label>
+          <input id="adminPin" name="adminPin" type="password" placeholder="Enter PIN" required />
+          <button class="btn" type="submit">Unlock Dashboard</button>
+          <p id="authError" class="error-text" hidden>Incorrect PIN. Try again.</p>
+        </form>
+      </section>
+
+      <section id="dashboard" hidden>
+        <article class="card">
+          <div class="admin-topbar">
+            <h1 class="dashboard-title">Engagement Dashboard</h1>
+            <button id="lockDashboard" class="btn btn-soft" type="button">Lock</button>
+          </div>
+          <p class="muted-text">Visible only after successful PIN access.</p>
+        </article>
+
+        <section class="grid-two">
+          <article class="card stats-card">
+            <h2>RSVP Tracking</h2>
+            <div class="stats-grid">
+              <div><p id="yesCount">0</p><small>Attending</small></div>
+              <div><p id="noCount">0</p><small>Not Attending</small></div>
+              <div><p id="maybeCount">0</p><small>Maybe</small></div>
+              <div><p id="totalGuests">0</p><small>Total People</small></div>
+            </div>
+            <ul id="rsvpList" class="rsvp-list"></ul>
+          </article>
+
+          <article class="card updates-card">
+            <h2>Data Updates</h2>
+            <form id="updateForm" class="stack" autocomplete="off">
+              <label for="updateMessage">Post update for guests</label>
+              <input
+                id="updateMessage"
+                name="updateMessage"
+                type="text"
+                maxlength="120"
+                placeholder="Example: Function starts at 7:00 PM"
+                required
+              />
+              <button class="btn" type="submit">Post Update</button>
+            </form>
+            <ul id="updatesList" class="updates-list"></ul>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

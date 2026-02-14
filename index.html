@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aarav & Meera | Engagement E-Invite</title>
+    <meta
+      name="description"
+      content="Interactive engagement e-invite with RSVP, live countdown, map, and background music."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="inviteIntro" class="intro-overlay" role="dialog" aria-label="Invitation envelope">
+      <div class="intro-panel">
+        <div class="envelope" aria-hidden="true">
+          <div class="envelope-paper"></div>
+          <div class="envelope-flap envelope-flap-top"></div>
+          <div class="envelope-flap envelope-flap-left"></div>
+          <div class="envelope-flap envelope-flap-right"></div>
+          <div class="envelope-ornament envelope-ornament-top"></div>
+          <div class="envelope-ornament envelope-ornament-bottom"></div>
+        </div>
+        <button id="waxSeal" class="wax-seal" type="button" aria-label="Open invitation">S&amp;S</button>
+        <p class="intro-text">Tap wax seal to open invitation</p>
+      </div>
+    </div>
+
+    <div class="bg-shape shape-1" aria-hidden="true"></div>
+    <div class="bg-shape shape-2" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <p class="brand">Engagement Invite</p>
+      <button id="musicToggle" class="btn btn-soft" type="button" aria-pressed="false">Play Music</button>
+    </header>
+
+    <main class="container">
+      <section class="hero card">
+        <p class="eyebrow">Together with their families</p>
+        <h1>Aarav <span>&</span> Meera</h1>
+        <p class="hero-sub">Request the honor of your presence at their engagement celebration.</p>
+        <div class="event-meta">
+          <div>
+            <p class="label">Date</p>
+            <p id="eventDateText">Sunday, June 14, 2026</p>
+          </div>
+          <div>
+            <p class="label">Time</p>
+            <p>6:30 PM onwards</p>
+          </div>
+          <div>
+            <p class="label">Venue</p>
+            <p>The Orchid Courtyard, Jaipur</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid-two">
+        <article class="card countdown-card">
+          <h2>Live Countdown</h2>
+          <div id="countdown" class="countdown" role="timer" aria-live="polite">
+            <div><span id="days">0</span><small>Days</small></div>
+            <div><span id="hours">0</span><small>Hours</small></div>
+            <div><span id="minutes">0</span><small>Minutes</small></div>
+            <div><span id="seconds">0</span><small>Seconds</small></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>RSVP</h2>
+          <form id="rsvpForm" class="stack" autocomplete="off">
+            <label for="guestName">Guest Name</label>
+            <input id="guestName" name="guestName" type="text" placeholder="Your full name" required />
+
+            <label for="guestCount">Number of Guests</label>
+            <input id="guestCount" name="guestCount" type="number" min="1" max="8" value="1" required />
+
+            <label for="attendance">Will you attend?</label>
+            <select id="attendance" name="attendance" required>
+              <option value="yes">Yes, with pleasure</option>
+              <option value="no">Regretfully no</option>
+              <option value="maybe">Maybe</option>
+            </select>
+
+            <button class="btn" type="submit">Submit RSVP</button>
+            <p id="rsvpThanks" class="muted-text" hidden>Thank you! Your RSVP has been received.</p>
+          </form>
+        </article>
+      </section>
+
+      <section class="card map-card">
+        <h2>Interactive Map</h2>
+        <p>Find the venue quickly and open directions directly.</p>
+        <div class="map-wrap">
+          <iframe
+            title="Venue map"
+            src="https://www.google.com/maps?q=The+Orchid+Courtyard+Jaipur&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <a class="btn btn-soft" target="_blank" rel="noreferrer" href="https://maps.google.com/?q=The+Orchid+Courtyard+Jaipur">Open in Google Maps</a>
+      </section>
+
+    </main>
+
+    <audio id="bgMusic" loop preload="none">
+      <source src="https://cdn.pixabay.com/download/audio/2022/02/22/audio_d1718ab41e.mp3?filename=romantic-love-115673.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script src="script.js"></script>
+  </body>
+</html>
