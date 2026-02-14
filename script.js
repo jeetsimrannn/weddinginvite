@@ -15,7 +15,8 @@ const rsvpThanks = document.getElementById("rsvpThanks");
 const musicToggle = document.getElementById("musicToggle");
 const bgMusic = document.getElementById("bgMusic");
 const inviteIntro = document.getElementById("inviteIntro");
-const waxSeal = document.getElementById("waxSeal");
+const envelopeMedia = document.getElementById("envelopeMedia");
+const introVideo = document.getElementById("introVideo");
 
 function readStore(key, fallback) {
   try {
@@ -98,25 +99,31 @@ function hideIntro() {
   document.body.classList.remove("intro-active");
   setTimeout(() => {
     inviteIntro.hidden = true;
-  }, 460);
+  }, 760);
 }
 
 if (inviteIntro) {
   document.body.classList.add("intro-active");
-  waxSeal?.addEventListener("click", async () => {
+  envelopeMedia?.addEventListener("click", async () => {
     if (inviteIntro.classList.contains("is-opening")) return;
-    waxSeal.disabled = true;
     inviteIntro.classList.add("is-opening");
+    if (introVideo) {
+      introVideo.currentTime = 0;
+      try {
+        await introVideo.play();
+      } catch {
+        // If video cannot autoplay, proceed after a delay.
+      }
+    }
     bgMusic.muted = false;
     await ensureMusicPlaying();
     updateMusicToggleLabel();
-    setTimeout(hideIntro, 2300);
   });
 
-  waxSeal?.addEventListener("keydown", (event) => {
+  envelopeMedia?.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      waxSeal.click();
+      envelopeMedia.click();
     }
   });
 }
@@ -125,13 +132,26 @@ if (!inviteIntro) {
   document.body.classList.remove("intro-active");
 }
 
-if (!waxSeal && inviteIntro) {
+if (!envelopeMedia && inviteIntro) {
   setTimeout(() => {
     hideIntro();
   }, 2000);
 }
 
+if (introVideo) {
+  introVideo.addEventListener("ended", hideIntro);
+  introVideo.addEventListener("error", () => {
+    setTimeout(hideIntro, 1800);
+  });
+  setTimeout(() => {
+    if (inviteIntro?.classList.contains("is-opening") && !inviteIntro.hidden) {
+      hideIntro();
+    }
+  }, 12000);
+}
+
 bgMusic.muted = false;
+bgMusic.volume = 0.5;
 updateMusicToggleLabel();
 tickCountdown();
 setInterval(tickCountdown, 1000);

@@ -19,16 +19,12 @@
   <body>
     <div id="inviteIntro" class="intro-overlay" role="dialog" aria-label="Invitation envelope">
       <div class="intro-panel">
-        <div class="envelope" aria-hidden="true">
-          <div class="envelope-paper"></div>
-          <div class="envelope-flap envelope-flap-top"></div>
-          <div class="envelope-flap envelope-flap-left"></div>
-          <div class="envelope-flap envelope-flap-right"></div>
-          <div class="envelope-ornament envelope-ornament-top"></div>
-          <div class="envelope-ornament envelope-ornament-bottom"></div>
+        <div id="envelopeMedia" class="envelope-media" role="button" tabindex="0" aria-label="Open invitation">
+          <img id="introImage" class="intro-image" src="envelope-intro.jpg" alt="" />
+          <video id="introVideo" class="intro-video" preload="auto" playsinline muted>
+            <source src="envelope-intro-video.mov" type="video/quicktime" />
+          </video>
         </div>
-        <button id="waxSeal" class="wax-seal" type="button" aria-label="Open invitation">S&amp;S</button>
-        <p class="intro-text">Tap wax seal to open invitation</p>
       </div>
     </div>
 
