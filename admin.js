@@ -1,8 +1,3 @@
-const STORAGE_KEYS = {
-  updates: "engagement_updates",
-  rsvps: "engagement_rsvps",
-};
-
 const ADMIN_PIN = "4580";
 const SESSION_KEY = "engagement_admin_unlocked";
 
@@ -14,6 +9,12 @@ const lockDashboard = document.getElementById("lockDashboard");
 const updateForm = document.getElementById("updateForm");
 const updatesList = document.getElementById("updatesList");
 const rsvpList = document.getElementById("rsvpList");
+const dedupeRsvp = document.getElementById("dedupeRsvp");
+const clearRsvp = document.getElementById("clearRsvp");
+const storageMode = document.getElementById("storageMode");
+let refreshTimer = null;
+
+const store = window.InviteStore;
 
 const statEls = {
   yes: document.getElementById("yesCount"),
@@ -21,19 +22,6 @@ const statEls = {
   maybe: document.getElementById("maybeCount"),
   total: document.getElementById("totalGuests"),
 };
-
-function readStore(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function writeStore(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
 
 function formatTimeStamp(iso) {
   return new Date(iso).toLocaleString([], {
@@ -44,8 +32,12 @@ function formatTimeStamp(iso) {
   });
 }
 
-function renderUpdates() {
-  const updates = readStore(STORAGE_KEYS.updates, []);
+function normalizeName(name) {
+  return store.normalizeName(name);
+}
+
+async function renderUpdates() {
+  const updates = await store.getUpdates();
   updatesList.innerHTML = "";
 
   if (!updates.length) {
@@ -55,18 +47,15 @@ function renderUpdates() {
     return;
   }
 
-  updates
-    .slice()
-    .reverse()
-    .forEach((update) => {
-      const li = document.createElement("li");
-      li.innerHTML = `<strong>${update.message}</strong><br><small>${formatTimeStamp(update.createdAt)}</small>`;
-      updatesList.appendChild(li);
-    });
+  updates.forEach((update) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${update.message}</strong><br><small>${formatTimeStamp(update.createdAt)}</small>`;
+    updatesList.appendChild(li);
+  });
 }
 
-function renderRsvps() {
-  const rsvps = readStore(STORAGE_KEYS.rsvps, []);
+async function renderRsvps() {
+  const rsvps = await store.getRsvps();
   rsvpList.innerHTML = "";
 
   const stats = { yes: 0, no: 0, maybe: 0, total: 0 };
@@ -78,6 +67,8 @@ function renderRsvps() {
     stats.total += Number(entry.guestCount) || 0;
 
     const li = document.createElement("li");
+    li.className = "rsvp-item";
+
     const label =
       entry.attendance === "yes"
         ? "Attending"
@@ -85,7 +76,17 @@ function renderRsvps() {
           ? "Not attending"
           : "Maybe";
 
-    li.innerHTML = `<strong>${entry.name}</strong> (${entry.guestCount}) - ${label}`;
+    const time = entry.createdAt ? formatTimeStamp(entry.createdAt) : "Unknown time";
+
+    li.innerHTML = `
+      <div>
+        <strong>${entry.name}</strong> (${entry.guestCount}) - ${label}
+        <br>
+        <small>${time}</small>
+      </div>
+      <button class="btn btn-soft mini-btn" type="button" data-delete-rsvp="${entry.id}">Delete</button>
+    `;
+
     rsvpList.appendChild(li);
   });
 
@@ -101,14 +102,49 @@ function renderRsvps() {
   }
 }
 
-function unlock() {
-  authCard.hidden = true;
-  dashboard.hidden = false;
-  renderUpdates();
-  renderRsvps();
+async function removeDuplicateRsvps() {
+  const rsvps = await store.getRsvps();
+  const seen = new Set();
+  const duplicates = [];
+
+  rsvps.forEach((entry) => {
+    const key = normalizeName(entry.name);
+    if (seen.has(key)) {
+      duplicates.push(entry.id);
+      return;
+    }
+    seen.add(key);
+  });
+
+  await Promise.all(duplicates.map((id) => store.deleteRsvp(id)));
+  await renderRsvps();
 }
 
-authForm.addEventListener("submit", (event) => {
+async function clearAllRsvps() {
+  await store.clearRsvps();
+  await renderRsvps();
+}
+
+async function unlock() {
+  authCard.hidden = true;
+  dashboard.hidden = false;
+  storageMode.textContent =
+    store.mode === "cloud"
+      ? "Backend: Cloud (shared across devices)"
+      : "Backend: Local browser only";
+  await renderUpdates();
+  await renderRsvps();
+
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+  }
+  refreshTimer = setInterval(async () => {
+    await renderRsvps();
+    await renderUpdates();
+  }, 5000);
+}
+
+authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const pin = String(new FormData(authForm).get("adminPin") || "").trim();
 
@@ -120,27 +156,48 @@ authForm.addEventListener("submit", (event) => {
   authError.hidden = true;
   sessionStorage.setItem(SESSION_KEY, "true");
   authForm.reset();
-  unlock();
+  await unlock();
 });
 
-updateForm.addEventListener("submit", (event) => {
+updateForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const input = document.getElementById("updateMessage");
   const message = input.value.trim();
   if (!message) return;
 
-  const updates = readStore(STORAGE_KEYS.updates, []);
-  updates.push({ message, createdAt: new Date().toISOString() });
-  writeStore(STORAGE_KEYS.updates, updates);
-
+  await store.addUpdate(message);
   input.value = "";
-  renderUpdates();
+  await renderUpdates();
+});
+
+rsvpList.addEventListener("click", async (event) => {
+  const target = event.target;
+  if (!(target instanceof HTMLElement)) return;
+
+  const id = target.getAttribute("data-delete-rsvp");
+  if (!id) return;
+  await store.deleteRsvp(id);
+  await renderRsvps();
+});
+
+dedupeRsvp?.addEventListener("click", async () => {
+  await removeDuplicateRsvps();
+});
+
+clearRsvp?.addEventListener("click", async () => {
+  const ok = window.confirm("Delete all RSVP entries?");
+  if (!ok) return;
+  await clearAllRsvps();
 });
 
 lockDashboard.addEventListener("click", () => {
   sessionStorage.removeItem(SESSION_KEY);
   dashboard.hidden = true;
   authCard.hidden = false;
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
 });
 
 if (sessionStorage.getItem(SESSION_KEY) === "true") {

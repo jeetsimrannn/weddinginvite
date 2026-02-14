@@ -320,6 +320,25 @@ select {
   border-radius: 10px;
 }
 
+.rsvp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rsvp-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.mini-btn {
+  padding: 7px 10px;
+  font-size: 0.85rem;
+}
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

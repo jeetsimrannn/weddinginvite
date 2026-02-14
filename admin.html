@@ -35,11 +35,16 @@
             <button id="lockDashboard" class="btn btn-soft" type="button">Lock</button>
           </div>
           <p class="muted-text">Visible only after successful PIN access.</p>
+          <p id="storageMode" class="muted-text"></p>
         </article>
 
         <section class="grid-two">
           <article class="card stats-card">
             <h2>RSVP Tracking</h2>
+            <div class="rsvp-actions">
+              <button id="dedupeRsvp" class="btn btn-soft" type="button">Remove Duplicates</button>
+              <button id="clearRsvp" class="btn btn-soft" type="button">Clear All RSVPs</button>
+            </div>
             <div class="stats-grid">
               <div><p id="yesCount">0</p><small>Attending</small></div>
               <div><p id="noCount">0</p><small>Not Attending</small></div>
@@ -69,6 +74,8 @@
       </section>
     </main>
 
+    <script src="supabase-config.js"></script>
+    <script src="backend.js"></script>
     <script src="admin.js"></script>
   </body>
 </html>

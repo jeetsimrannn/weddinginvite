@@ -1,7 +1,4 @@
 const EVENT_DATE_ISO = "2026-03-14T18:30:00";
-const STORAGE_KEYS = {
-  rsvps: "engagement_rsvps",
-};
 
 const countdownIds = {
   days: document.getElementById("days"),
@@ -18,18 +15,7 @@ const inviteIntro = document.getElementById("inviteIntro");
 const envelopeMedia = document.getElementById("envelopeMedia");
 const introVideo = document.getElementById("introVideo");
 
-function readStore(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function writeStore(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
+const store = window.InviteStore;
 
 function tickCountdown() {
   const target = new Date(EVENT_DATE_ISO).getTime();
@@ -58,12 +44,12 @@ async function ensureMusicPlaying() {
     try {
       await bgMusic.play();
     } catch {
-      // Browser may still block playback in some contexts.
+      // Browser may block playback.
     }
   }
 }
 
-rsvpForm.addEventListener("submit", (event) => {
+rsvpForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(rsvpForm);
@@ -73,18 +59,25 @@ rsvpForm.addEventListener("submit", (event) => {
 
   if (!name || Number.isNaN(guestCount) || guestCount < 1) return;
 
-  const rsvps = readStore(STORAGE_KEYS.rsvps, []);
-  rsvps.push({
-    name,
-    guestCount,
-    attendance,
-    createdAt: new Date().toISOString(),
-  });
-  writeStore(STORAGE_KEYS.rsvps, rsvps);
+  try {
+    await store.upsertRsvp({
+      name,
+      guestCount,
+      attendance,
+      createdAt: new Date().toISOString(),
+    });
 
-  rsvpForm.reset();
-  document.getElementById("guestCount").value = "1";
-  rsvpThanks.hidden = false;
+    rsvpForm.reset();
+    document.getElementById("guestCount").value = "1";
+    rsvpThanks.textContent = "Thank you! Your RSVP has been received.";
+    rsvpThanks.hidden = false;
+  } catch {
+    rsvpThanks.textContent = "Could not save RSVP right now. Please try again.";
+    rsvpThanks.style.color = "#9f2318";
+    rsvpThanks.hidden = false;
+    return;
+  }
+  rsvpThanks.style.color = "";
 });
 
 musicToggle.addEventListener("click", async () => {
@@ -112,7 +105,7 @@ if (inviteIntro) {
       try {
         await introVideo.play();
       } catch {
-        // If video cannot autoplay, proceed after a delay.
+        // If intro video cannot autoplay, continue anyway.
       }
     }
     bgMusic.muted = false;
