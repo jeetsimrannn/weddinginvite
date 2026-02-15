@@ -14,6 +14,7 @@ const bgMusic = document.getElementById("bgMusic");
 const inviteIntro = document.getElementById("inviteIntro");
 const envelopeMedia = document.getElementById("envelopeMedia");
 const introVideo = document.getElementById("introVideo");
+const heroBgVideo = document.getElementById("heroBgVideo");
 
 const store = window.InviteStore;
 
@@ -35,7 +36,8 @@ function tickCountdown() {
 
 function updateMusicToggleLabel() {
   const isMuted = bgMusic.muted;
-  musicToggle.textContent = isMuted ? "Unmute" : "Mute";
+  musicToggle.textContent = isMuted ? "🔇" : "🔊";
+  musicToggle.setAttribute("aria-label", isMuted ? "Unmute music" : "Mute music");
   musicToggle.setAttribute("aria-pressed", String(!isMuted));
 }
 
@@ -90,12 +92,25 @@ function hideIntro() {
   if (!inviteIntro || inviteIntro.hidden) return;
   inviteIntro.classList.add("is-hidden");
   document.body.classList.remove("intro-active");
+  document.body.classList.add("intro-complete");
+  startHeroBgVideo();
   setTimeout(() => {
     inviteIntro.hidden = true;
   }, 760);
 }
 
+async function startHeroBgVideo() {
+  if (!heroBgVideo) return;
+  heroBgVideo.currentTime = 0;
+  try {
+    await heroBgVideo.play();
+  } catch {
+    // Ignore playback blocking and keep the hero visible.
+  }
+}
+
 if (inviteIntro) {
+  document.body.classList.remove("intro-complete");
   document.body.classList.add("intro-active");
   envelopeMedia?.addEventListener("click", async () => {
     if (inviteIntro.classList.contains("is-opening")) return;
@@ -123,6 +138,8 @@ if (inviteIntro) {
 
 if (!inviteIntro) {
   document.body.classList.remove("intro-active");
+  document.body.classList.add("intro-complete");
+  startHeroBgVideo();
 }
 
 if (!envelopeMedia && inviteIntro) {

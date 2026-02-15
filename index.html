@@ -11,12 +11,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Lora:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="invite-page">
     <div id="inviteIntro" class="intro-overlay" role="dialog" aria-label="Invitation envelope">
       <div class="intro-panel">
         <div id="envelopeMedia" class="envelope-media" role="button" tabindex="0" aria-label="Open invitation">
@@ -31,29 +31,22 @@
     <div class="bg-shape shape-1" aria-hidden="true"></div>
     <div class="bg-shape shape-2" aria-hidden="true"></div>
 
-    <header class="topbar">
-      <p class="brand">Engagement Invite</p>
-      <button id="musicToggle" class="btn btn-soft" type="button" aria-pressed="false">Mute</button>
-    </header>
-
     <main class="container">
-      <section class="hero card">
-        <p class="eyebrow">Together with their families</p>
-        <h1>Simranjeet <span>&</span> Simi</h1>
-        <p class="hero-sub">Request the honor of your presence at their engagement celebration.</p>
-        <div class="event-meta">
-          <div>
-            <p class="label">Date</p>
-            <p id="eventDateText">March 14, 2026</p>
-          </div>
-          <div>
-            <p class="label">Time</p>
-            <p>6:30 PM onwards</p>
-          </div>
-          <div>
-            <p class="label">Venue</p>
-            <p>Singhasan Banquet Hall and Lawn, Rohtak</p>
-          </div>
+      <section class="landing-hero" id="landingHero">
+        <video id="heroBgVideo" class="hero-bg-video" preload="auto" muted loop playsinline>
+          <source src="main-page-video.mov" type="video/quicktime" />
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="hero-line reveal-line" style="--line-delay: 0.15s">TOGETHER WITH THEIR FAMILIES</p>
+          <h1 class="hero-line reveal-line hero-names" style="--line-delay: 0.75s">Simranjeet &amp; Simi</h1>
+          <p class="hero-line reveal-line hero-request" style="--line-delay: 1.35s">
+            Request the honor of your presence at their engagement celebration.
+          </p>
+        </div>
+        <div class="hero-scroll-cue" aria-hidden="true">
+          <span>confirm your attendance</span>
+          <span class="hero-arrow" aria-hidden="true">⌄</span>
         </div>
       </section>
 
@@ -68,7 +61,7 @@
           </div>
         </article>
 
-        <article class="card">
+        <article class="card" id="rsvpSection">
           <h2>RSVP</h2>
           <form id="rsvpForm" class="stack" autocomplete="off">
             <label for="guestName">Guest Name</label>
@@ -109,6 +102,8 @@
     <audio id="bgMusic" loop preload="auto">
       <source src="bg-audio.mp3" type="audio/mpeg" />
     </audio>
+
+    <button id="musicToggle" class="music-fab" type="button" aria-pressed="false" aria-label="Mute music">🔊</button>
 
     <script src="supabase-config.js"></script>
     <script src="backend.js"></script>
