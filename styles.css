@@ -304,7 +304,7 @@ body.intro-complete .reveal-line {
   z-index: 2;
   display: grid;
   justify-items: center;
-  gap: 4px;
+  gap: 1px;
   text-decoration: none;
   color: #e8d2a0;
   text-transform: uppercase;
@@ -478,16 +478,111 @@ select {
 .invite-page .countdown-card {
   background: linear-gradient(180deg, rgba(10, 10, 10, 0.78), rgba(9, 9, 9, 0.8)),
     url("bg-charcoal.jpg") center / cover no-repeat;
+  padding-top: clamp(42px, 8vw, 96px);
+  padding-bottom: clamp(42px, 8vw, 96px);
 }
 
 .invite-page #rsvpSection {
-  background: linear-gradient(180deg, rgba(35, 33, 30, 0.94), rgba(30, 27, 24, 0.94));
-  border-color: rgba(223, 192, 132, 0.22);
+  background: linear-gradient(180deg, rgba(227, 211, 177, 0.98), rgba(216, 197, 159, 0.98));
+  color: #221c16;
+  text-align: center;
 }
 
 .invite-page .map-card {
-  background: linear-gradient(180deg, rgba(30, 28, 24, 0.9), rgba(25, 22, 18, 0.9));
-  border-color: rgba(223, 192, 132, 0.2);
+  background: linear-gradient(180deg, rgba(244, 232, 206, 0.98), rgba(233, 217, 185, 0.98));
+  color: #211b15;
+}
+
+.invite-page #rsvpSection h2,
+.invite-page #rsvpSection p,
+.invite-page #rsvpSection label,
+.invite-page .map-card h2,
+.invite-page .map-card p {
+  color: #241d16;
+}
+
+.invite-page #rsvpSection input,
+.invite-page #rsvpSection select {
+  background: rgba(255, 249, 236, 0.9);
+  border-color: rgba(88, 69, 43, 0.25);
+  color: #241d16;
+}
+
+.invite-page #rsvpSection .muted-text {
+  color: #4b3d2d;
+}
+
+.invite-page #rsvpSection .btn-soft,
+.invite-page .map-card .btn-soft {
+  background: rgba(255, 245, 224, 0.9);
+  color: #241d16;
+  border-color: rgba(88, 69, 43, 0.24);
+}
+
+.invite-footer {
+  width: 100%;
+  margin: 0;
+  padding: clamp(58px, 8vw, 110px) 20px;
+  background: #41453f;
+  color: #e4c987;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.invite-footer .footer-icon {
+  margin: 0 0 10px;
+  font-size: clamp(1.45rem, 2.5vw, 1.95rem);
+  line-height: 0.72;
+  transform: translateY(3px);
+  color: #e8d8b0;
+}
+
+.invite-footer h3 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  color: #f1e6cd;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.invite-footer .footer-date {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.6vw, 1.2rem);
+  color: #e7d09f;
+}
+
+.invite-footer .footer-credits {
+  margin: clamp(18px, 3vw, 28px) 0 0;
+  font-size: clamp(0.86rem, 1.2vw, 1rem);
+  color: #dbc38f;
+}
+
+.invite-footer .footer-credits a {
+  color: #f1ddb0;
+  text-decoration-color: rgba(241, 221, 176, 0.65);
+  text-underline-offset: 4px;
+}
+
+.rsvp-sub {
+  margin: 0 0 18px;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+}
+
+.rsvp-form-card {
+  width: min(560px, 100%);
+  margin: 0 auto;
+  text-align: left;
+  background: rgba(255, 249, 236, 0.82);
+  border: 1px solid rgba(88, 69, 43, 0.2);
+  border-radius: 16px;
+  padding: clamp(16px, 2.6vw, 24px);
+  box-shadow: 0 8px 24px rgba(46, 35, 21, 0.14);
+}
+
+.rsvp-form-card .btn {
+  margin-inline: auto;
 }
 
 @media (min-width: 901px) and (min-aspect-ratio: 13/8) {

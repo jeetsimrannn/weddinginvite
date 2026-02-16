@@ -64,24 +64,27 @@
         </article>
 
         <article class="card" id="rsvpSection">
-          <h2>RSVP</h2>
-          <form id="rsvpForm" class="stack" autocomplete="off">
-            <label for="guestName">Guest Name</label>
-            <input id="guestName" name="guestName" type="text" placeholder="Your full name" required />
+          <h2>Confirm Your Attendance</h2>
+          <p class="rsvp-sub">We hope to see you there</p>
+          <div class="rsvp-form-card">
+            <form id="rsvpForm" class="stack" autocomplete="off">
+              <label for="guestName">Guest Name</label>
+              <input id="guestName" name="guestName" type="text" placeholder="Your full name" required />
 
-            <label for="guestCount">Number of Guests</label>
-            <input id="guestCount" name="guestCount" type="number" min="1" max="8" value="1" required />
+              <label for="guestCount">Number of Guests</label>
+              <input id="guestCount" name="guestCount" type="number" min="1" max="8" value="1" required />
 
-            <label for="attendance" class="attendance-label">Choose your attendance</label>
-            <select id="attendance" name="attendance" required>
-              <option value="yes">Yes, with pleasure</option>
-              <option value="no">Regretfully no</option>
-              <option value="maybe">Maybe</option>
-            </select>
+              <label for="attendance" class="attendance-label">Choose your attendance</label>
+              <select id="attendance" name="attendance" required>
+                <option value="yes">Yes, with pleasure</option>
+                <option value="no">Regretfully no</option>
+                <option value="maybe">Maybe</option>
+              </select>
 
-            <button class="btn" type="submit">Submit RSVP</button>
-            <p id="rsvpThanks" class="muted-text" hidden>Thank you! Your RSVP has been received.</p>
-          </form>
+              <button class="btn" type="submit">Submit RSVP</button>
+              <p id="rsvpThanks" class="muted-text" hidden>Thank you! Your RSVP has been received.</p>
+            </form>
+          </div>
         </article>
       </section>
 
@@ -98,6 +101,21 @@
         </div>
         <a class="btn btn-soft" target="_blank" rel="noreferrer" href="https://share.google/i8IjdN2iilitiNuAR">Open in Google Maps</a>
       </section>
+
+      <footer class="invite-footer" aria-label="Footer">
+        <p class="footer-icon" aria-hidden="true">♡</p>
+        <h3>Simranjeet &amp; Simi</h3>
+        <p class="footer-date">March 14, 2026</p>
+        <p class="footer-credits">
+          Made with love by
+          <a
+            href="https://www.instagram.com/jeetsimrann?igsh=NnMxcHNib2oxb25v&utm_source=qr"
+            target="_blank"
+            rel="noreferrer"
+            >Simran</a
+          >
+        </p>
+      </footer>
 
     </main>
 
