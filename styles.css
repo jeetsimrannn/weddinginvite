@@ -187,6 +187,14 @@ body.intro-active {
   margin-inline: auto;
 }
 
+.invite-page .container > :not(.landing-hero) {
+  width: 100%;
+}
+
+.invite-page .container {
+  gap: 0;
+}
+
 .card {
   background: linear-gradient(180deg, rgba(27, 27, 27, 0.86), rgba(18, 18, 18, 0.82));
   border: 1px solid var(--border);
@@ -347,6 +355,21 @@ body.intro-complete .reveal-line {
   gap: 18px;
 }
 
+.invite-page .grid-two {
+  grid-template-columns: 1fr;
+  gap: 0;
+  width: 100%;
+}
+
+.invite-page .card {
+  width: 100%;
+  margin: 0;
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+  padding: clamp(26px, 4vw, 44px) min(8vw, 72px);
+}
+
 h2 {
   margin-top: 0;
   margin-bottom: 14px;
@@ -423,12 +446,12 @@ select {
 }
 
 .countdown div {
-  background: rgba(88, 88, 88, 0.35);
-  border: 1px solid rgba(235, 220, 188, 0.28);
+  background: rgba(56, 56, 56, 0.72);
+  border: 0;
   border-radius: 16px;
   padding: 18px 10px;
   text-align: center;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .countdown span {
@@ -450,6 +473,27 @@ select {
     url("bg-charcoal.jpg") center / cover no-repeat;
   border-color: rgba(223, 192, 132, 0.35);
   text-align: center;
+}
+
+.invite-page .countdown-card {
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.78), rgba(9, 9, 9, 0.8)),
+    url("bg-charcoal.jpg") center / cover no-repeat;
+}
+
+.invite-page #rsvpSection {
+  background: linear-gradient(180deg, rgba(35, 33, 30, 0.94), rgba(30, 27, 24, 0.94));
+  border-color: rgba(223, 192, 132, 0.22);
+}
+
+.invite-page .map-card {
+  background: linear-gradient(180deg, rgba(30, 28, 24, 0.9), rgba(25, 22, 18, 0.9));
+  border-color: rgba(223, 192, 132, 0.2);
+}
+
+@media (min-width: 901px) and (min-aspect-ratio: 13/8) {
+  .invite-page .countdown {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .countdown-card h2 {
