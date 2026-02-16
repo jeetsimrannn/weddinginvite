@@ -15,6 +15,9 @@ const inviteIntro = document.getElementById("inviteIntro");
 const envelopeMedia = document.getElementById("envelopeMedia");
 const introVideo = document.getElementById("introVideo");
 const heroBgVideo = document.getElementById("heroBgVideo");
+const INTRO_VISIBLE_MS = 2600;
+const HERO_VIDEO_START_DELAY_MS = 2200;
+let introTimeoutId = null;
 
 const store = window.InviteStore;
 
@@ -90,10 +93,16 @@ musicToggle.addEventListener("click", async () => {
 
 function hideIntro() {
   if (!inviteIntro || inviteIntro.hidden) return;
+  if (introTimeoutId) {
+    clearTimeout(introTimeoutId);
+    introTimeoutId = null;
+  }
   inviteIntro.classList.add("is-hidden");
   document.body.classList.remove("intro-active");
   document.body.classList.add("intro-complete");
-  startHeroBgVideo();
+  setTimeout(() => {
+    startHeroBgVideo();
+  }, HERO_VIDEO_START_DELAY_MS);
   setTimeout(() => {
     inviteIntro.hidden = true;
   }, 760);
@@ -104,7 +113,7 @@ async function startHeroBgVideo() {
   heroBgVideo.muted = true;
   heroBgVideo.playsInline = true;
   heroBgVideo.currentTime = 0;
-  heroBgVideo.load();
+  document.body.classList.add("hero-video-visible");
   try {
     await heroBgVideo.play();
   } catch {
@@ -118,7 +127,6 @@ if (inviteIntro) {
   envelopeMedia?.addEventListener("click", async () => {
     if (inviteIntro.classList.contains("is-opening")) return;
     inviteIntro.classList.add("is-opening");
-    startHeroBgVideo();
     if (introVideo) {
       introVideo.currentTime = 0;
       try {
@@ -127,6 +135,7 @@ if (inviteIntro) {
         // If intro video cannot autoplay, continue anyway.
       }
     }
+    introTimeoutId = setTimeout(hideIntro, INTRO_VISIBLE_MS);
     bgMusic.muted = false;
     await ensureMusicPlaying();
     updateMusicToggleLabel();
@@ -143,6 +152,7 @@ if (inviteIntro) {
 if (!inviteIntro) {
   document.body.classList.remove("intro-active");
   document.body.classList.add("intro-complete");
+  document.body.classList.add("hero-video-visible");
   startHeroBgVideo();
 }
 
@@ -161,7 +171,7 @@ if (introVideo) {
     if (inviteIntro?.classList.contains("is-opening") && !inviteIntro.hidden) {
       hideIntro();
     }
-  }, 12000);
+  }, 4500);
 }
 
 bgMusic.muted = false;
