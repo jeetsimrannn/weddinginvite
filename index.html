@@ -21,7 +21,8 @@
       <div class="intro-panel">
         <div id="envelopeMedia" class="envelope-media" role="button" tabindex="0" aria-label="Open invitation">
           <img id="introImage" class="intro-image" src="envelope-intro.jpg" alt="" />
-          <video id="introVideo" class="intro-video" preload="auto" playsinline muted>
+          <video id="introVideo" class="intro-video" preload="auto" playsinline webkit-playsinline muted>
+            <source src="envelope-intro-video.mp4" type="video/mp4" />
             <source src="envelope-intro-video.mov" type="video/quicktime" />
           </video>
         </div>
@@ -33,7 +34,8 @@
 
     <main class="container">
       <section class="landing-hero" id="landingHero">
-        <video id="heroBgVideo" class="hero-bg-video" preload="auto" muted loop playsinline>
+        <video id="heroBgVideo" class="hero-bg-video" preload="auto" autoplay muted loop playsinline webkit-playsinline poster="envelope-intro.jpg">
+          <source src="main-page-video.mp4" type="video/mp4" />
           <source src="main-page-video.mov" type="video/quicktime" />
         </video>
         <div class="hero-overlay"></div>

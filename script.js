@@ -101,7 +101,10 @@ function hideIntro() {
 
 async function startHeroBgVideo() {
   if (!heroBgVideo) return;
+  heroBgVideo.muted = true;
+  heroBgVideo.playsInline = true;
   heroBgVideo.currentTime = 0;
+  heroBgVideo.load();
   try {
     await heroBgVideo.play();
   } catch {
@@ -115,6 +118,7 @@ if (inviteIntro) {
   envelopeMedia?.addEventListener("click", async () => {
     if (inviteIntro.classList.contains("is-opening")) return;
     inviteIntro.classList.add("is-opening");
+    startHeroBgVideo();
     if (introVideo) {
       introVideo.currentTime = 0;
       try {
