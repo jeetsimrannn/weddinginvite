@@ -15,9 +15,10 @@ const inviteIntro = document.getElementById("inviteIntro");
 const envelopeMedia = document.getElementById("envelopeMedia");
 const introVideo = document.getElementById("introVideo");
 const heroBgVideo = document.getElementById("heroBgVideo");
-const INTRO_VISIBLE_MS = 2600;
-const HERO_VIDEO_START_DELAY_MS = 2200;
+const INTRO_VISIBLE_MS = 2500;
+const HERO_VIDEO_START_DELAY_MS = 2900;
 let introTimeoutId = null;
+let heroVideoPrimed = false;
 
 const store = window.InviteStore;
 
@@ -112,12 +113,29 @@ async function startHeroBgVideo() {
   if (!heroBgVideo) return;
   heroBgVideo.muted = true;
   heroBgVideo.playsInline = true;
-  heroBgVideo.currentTime = 0;
+  if (!heroVideoPrimed) {
+    heroBgVideo.currentTime = 0;
+  }
   document.body.classList.add("hero-video-visible");
   try {
     await heroBgVideo.play();
   } catch {
     // Ignore playback blocking and keep the hero visible.
+  }
+}
+
+async function primeHeroBgVideoFromGesture() {
+  if (!heroBgVideo || heroVideoPrimed) return;
+  heroBgVideo.muted = true;
+  heroBgVideo.playsInline = true;
+  heroBgVideo.currentTime = 0;
+  try {
+    await heroBgVideo.play();
+    heroBgVideo.pause();
+    heroBgVideo.currentTime = 0;
+    heroVideoPrimed = true;
+  } catch {
+    // If priming fails, startHeroBgVideo will retry later.
   }
 }
 
@@ -127,6 +145,7 @@ if (inviteIntro) {
   envelopeMedia?.addEventListener("click", async () => {
     if (inviteIntro.classList.contains("is-opening")) return;
     inviteIntro.classList.add("is-opening");
+    await primeHeroBgVideoFromGesture();
     if (introVideo) {
       introVideo.currentTime = 0;
       try {

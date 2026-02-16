@@ -16,11 +16,12 @@
 
 body {
   margin: 0;
-  font-family: "Lora", serif;
+  font-family: "Cormorant Garamond", serif;
   color: var(--ink);
   background: radial-gradient(circle at 20% 10%, rgba(181, 143, 69, 0.16), transparent 34%),
     radial-gradient(circle at 90% 0%, rgba(115, 95, 52, 0.18), transparent 28%),
-    linear-gradient(160deg, var(--bg), var(--bg2));
+    linear-gradient(160deg, rgba(18, 18, 18, 0.9), rgba(15, 15, 15, 0.94)),
+    url("bg-charcoal.jpg") center / cover fixed no-repeat;
   min-height: 100vh;
 }
 
@@ -33,7 +34,8 @@ body.intro-active {
   inset: 0;
   display: grid;
   place-items: center;
-  background: #121212;
+  background: linear-gradient(160deg, rgba(18, 18, 18, 0.94), rgba(16, 16, 16, 0.96)),
+    url("bg-charcoal.jpg") center / cover no-repeat;
   z-index: 60;
   transition: opacity 0.75s ease, visibility 0.75s ease;
 }
@@ -157,7 +159,7 @@ body.intro-active {
 .music-fab {
   position: fixed;
   right: 18px;
-  bottom: 18px;
+  bottom: calc(32px + env(safe-area-inset-bottom));
   width: 58px;
   height: 58px;
   border-radius: 999px;
@@ -186,7 +188,7 @@ body.intro-active {
 }
 
 .card {
-  background: var(--card);
+  background: linear-gradient(180deg, rgba(27, 27, 27, 0.86), rgba(18, 18, 18, 0.82));
   border: 1px solid var(--border);
   border-radius: 18px;
   box-shadow: var(--shadow);
@@ -204,7 +206,8 @@ body.intro-active {
   display: grid;
   place-items: center;
   padding: 0;
-  background: #161616;
+  background: linear-gradient(180deg, rgba(23, 23, 23, 0.88), rgba(13, 13, 13, 0.88)),
+    url("bg-charcoal.jpg") center / cover no-repeat;
 }
 
 .hero-bg-video,
@@ -223,20 +226,26 @@ body.intro-active {
 
 .hero-overlay {
   background: linear-gradient(180deg, rgba(12, 12, 12, 0.82) 0%, rgba(16, 16, 16, 0.7) 58%, rgba(10, 10, 10, 0.82) 100%);
+  opacity: 1;
+  transition: opacity 1.2s ease;
 }
 
 body.hero-video-visible .hero-bg-video {
   opacity: 1;
 }
 
+body.hero-video-visible .hero-overlay {
+  opacity: 0.58;
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
   display: grid;
-  gap: 18px;
+  gap: 22px;
   text-align: center;
   max-width: 780px;
-  padding: 0 20px;
+  padding: 0 24px 116px;
 }
 
 .hero-line {
@@ -245,17 +254,27 @@ body.hero-video-visible .hero-bg-video {
   text-shadow: 0 2px 22px rgba(0, 0, 0, 0.5);
 }
 
+.hero-content > p:first-child {
+  font-size: 0.8rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+}
+
 .hero-names {
-  font-family: "Great Vibes", cursive;
+  font-family: "Cormorant Garamond", serif;
   font-size: clamp(2.3rem, 7vw, 5rem);
   line-height: 1;
-  font-weight: 400;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.01em;
 }
 
 .hero-request {
   font-size: clamp(1rem, 2.4vw, 1.35rem);
   max-width: 620px;
   color: #ead8b3;
+  font-style: italic;
+  line-height: 1.45;
 }
 
 .reveal-line {
@@ -285,6 +304,7 @@ body.intro-complete .reveal-line {
   font-size: 0.8rem;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.65);
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .hero-arrow {
@@ -332,6 +352,7 @@ h2 {
   margin-bottom: 14px;
   font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
+  font-style: italic;
 }
 
 .dashboard-title {
@@ -357,6 +378,10 @@ h2 {
   gap: 10px;
 }
 
+.attendance-label {
+  white-space: nowrap;
+}
+
 input,
 select {
   width: 100%;
@@ -366,16 +391,19 @@ select {
   font: inherit;
   background: rgba(12, 12, 12, 0.75);
   color: var(--ink);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.06rem;
 }
 
 .btn {
   border: 0;
   background: linear-gradient(120deg, #a8823f, #d7b471);
   color: #1c1710;
-  font: inherit;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.05rem;
   padding: 11px 14px;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
@@ -390,26 +418,51 @@ select {
 
 .countdown {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .countdown div {
-  background: rgba(14, 14, 14, 0.62);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px;
+  background: rgba(88, 88, 88, 0.35);
+  border: 1px solid rgba(235, 220, 188, 0.28);
+  border-radius: 16px;
+  padding: 18px 10px;
   text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .countdown span {
   display: block;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: clamp(2rem, 3.8vw, 2.6rem);
+  font-weight: 500;
+  color: #f2ead7;
 }
 
 .countdown small {
-  color: var(--muted);
+  color: #e3d4b5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.88rem;
+}
+
+.countdown-card {
+  background: linear-gradient(180deg, rgba(16, 16, 16, 0.6), rgba(16, 16, 16, 0.62)),
+    url("bg-charcoal.jpg") center / cover no-repeat;
+  border-color: rgba(223, 192, 132, 0.35);
+  text-align: center;
+}
+
+.countdown-card h2 {
+  font-size: clamp(2rem, 3.6vw, 2.5rem);
+  margin-bottom: 6px;
+  color: #f4ecdb;
+}
+
+.countdown-sub {
+  margin: 0 0 18px;
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  color: #ddcfaf;
+  line-height: 1.2;
 }
 
 .updates-list,
@@ -577,10 +630,6 @@ iframe {
     grid-template-columns: 1fr;
   }
 
-  .countdown {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .topbar {
     margin-top: 12px;
     top: 6px;
@@ -590,10 +639,35 @@ iframe {
     padding: 18px;
   }
 
+  .hero-content > p:first-child {
+    letter-spacing: 0.3em;
+  }
+
   .hero-scroll-cue {
     bottom: 14px;
     letter-spacing: 0.18em;
     font-size: 0.72rem;
+  }
+
+  .music-fab {
+    bottom: calc(40px + env(safe-area-inset-bottom));
+  }
+
+  .attendance-label {
+    font-size: 0.95rem;
+  }
+
+  .countdown {
+    gap: 12px;
+  }
+
+  .countdown span {
+    font-size: 2.2rem;
+  }
+
+  .countdown small {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
   }
 
 }
