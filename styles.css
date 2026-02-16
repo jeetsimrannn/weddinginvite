@@ -778,6 +778,11 @@ iframe {
     padding: 18px;
   }
 
+  .invite-page .countdown-card {
+    padding-top: 44px;
+    padding-bottom: 44px;
+  }
+
   .hero-content > p:first-child {
     letter-spacing: 0.3em;
   }
